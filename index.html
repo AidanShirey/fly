@@ -8,14 +8,16 @@
 
 	<input type="file" id="myFile">
 
+	<!--
+	
 	<button type="button" onClick="getfilepath()">import</button>
-
+	
+	-->
 	<p id="pathoutput"></p>
 
 	</body>
 
 	<script>
-		function getfilepath(){
 			var filepath = document.getElementById("myFile").addEventListener('change', function() { 
               
             var fr = new FileReader(); 
@@ -26,6 +28,5 @@
               
             fr.readAsText(this.files[0]); 
         }) 
-		}
 	</script>
 </html>
