@@ -8,5 +8,17 @@
 
 	<input type="file" id="myFile">
 
+	<button type="button" onClick="getfilepath()">import</button>
+
+	<p id="pathoutput"></p>
+
 	</body>
+
+	<script>
+		function getfilepath(){
+			var filepath = document.getElementById("myFile").value;
+			document.getElementById("pathoutput").innerHTML += filepath;
+		}
+
+	</script>
 </html>
