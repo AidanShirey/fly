@@ -16,9 +16,16 @@
 
 	<script>
 		function getfilepath(){
-			var filepath = document.getElementById("myFile").value;
-			document.getElementById("pathoutput").innerHTML += filepath;
+			var filepath = document.getElementById("myFile").addEventListener('change', function() { 
+              
+            var fr = new FileReader(); 
+            fr.onload=function(){ 
+                document.getElementById('pathoutput') 
+                        .textContent=fr.result; 
+            } 
+              
+            fr.readAsText(this.files[0]); 
+        }) 
 		}
-
 	</script>
 </html>
