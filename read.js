@@ -16,7 +16,7 @@ $("#file").on("change", function(evt) {
         $result.append($fileContent);
 
         var dateBefore = new Date();
-        JSZip.loadAsync(f)                                   // 1) read the Blob
+        new JSZip.loadAsync(f)                                   // 1) read the Blob
         .then(function(zip) {
             var dateAfter = new Date();
             $title.append($("<span>", {
