@@ -1,3 +1,4 @@
+var zip = new JSZip();
 var $result = $("#result");
 $("#file").on("change", function(evt) {
     // remove content
