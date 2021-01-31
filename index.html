@@ -28,7 +28,7 @@ div{
 
 	<p>Upload your file below!</p>
 
-	<input type="file" id="myFile">
+	<input type="file" id="file">
 
 	<!--
 	
@@ -41,11 +41,10 @@ div{
 	</div>
 
 </body>
-<script src="dist/jszip.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.5.0/jszip.js"></script>
 <script>        
-var zip = JSZip();
 var $result = $("#result");
-$("#myFile").on("change", function(evt) {
+$("#file").on("change", function(evt) {
     // remove content
     $result.html("");
     // be sure to show the results
