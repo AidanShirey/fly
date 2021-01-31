@@ -29,6 +29,9 @@ $("#file").on("change", function(evt) {
                 $fileContent.append($("<li>", {
                     text : zipEntry.name
                 }));
+                if (zipEntry.name == "Hello.txt")
+                    var content = zipEntry.async('text');
+                    $("#output").innerHTML += content;
             });
         }, function (e) {
             $result.append($("<div>", {
