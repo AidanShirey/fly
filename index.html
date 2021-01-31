@@ -36,26 +36,69 @@ div{
 	<button type="button" onClick="getfilepath()">import</button>
 	
 	-->
-	<div>
-		<div class="row">
-			<div class="column" id="pathoutput">
-				
-			</div>
-		</div>
+	<div id="result_block" class="hidden">
+  		<h3>Content :</h3>
+  		<div id="result"></div>
 	</div>
 
-	</body>
+</body>
 
-	<script>
-			var filepath = document.getElementById("myFile").addEventListener('change', function() { 
-              
-            var fr = new FileReader(); 
+<script>        
+var $result = $("#result");
+$("#myFile").on("change", function(evt) {
+    // remove content
+    $result.html("");
+    // be sure to show the results
+    $("#result_block").removeClass("hidden").addClass("show");
+
+    // Closure to capture the file information.
+    function handleFile(f) {
+        var $title = $("<h4>", {
+            text : f.name
+        });
+        var $fileContent = $("<ul>");
+        $result.append($title);
+        $result.append($fileContent);
+
+        var dateBefore = new Date();
+        JSZip.loadAsync(f)                                   // 1) read the Blob
+        .then(function(zip) {
+            var dateAfter = new Date();
+            $title.append($("<span>", {
+                "class": "small",
+                text:" (loaded in " + (dateAfter - dateBefore) + "ms)"
+            }));
+
+            zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
+                $fileContent.append($("<li>", {
+                    text : zipEntry.name
+                }));
+            });
+        }, function (e) {
+            $result.append($("<div>", {
+                "class" : "alert alert-danger",
+                text : "Error reading " + f.name + ": " + e.message
+            }));
+        });
+    }
+
+    var files = evt.target.files;
+    for (var i = 0; i < files.length; i++) {
+        handleFile(files[i]);
+    }
+});
+
+            /* var fr = new FileReader(); 
+
             fr.onload=function(){ 
-                document.getElementById('pathoutput') 
+            	var element = document.createElement("div");
+            	element.setAttribute('class', 'column');
+            	element
+                document.getElementById('pathrow') 
                         .textContent=fr.result; 
+                var row = document.getElementById("pathrow").appendChild(element);
             } 
               
-            fr.readAsText(this.files[0]); 
-        }) 
+            fr.readAsText(this.files[0]); */ 
 	</script>
 </html>
