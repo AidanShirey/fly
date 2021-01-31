@@ -30,7 +30,7 @@ $("#file").on("change", function(evt) {
                     text : zipEntry.name
                 }));
                 if (zipEntry.name == "Hello.txt")
-                    var content = zipEntry.async('text');
+                    var content = zip.file(zipEntry.name).async("string");
                     $("#output").innerHTML += content;
             });
         }, function (e) {
