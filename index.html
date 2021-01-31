@@ -38,12 +38,7 @@ div{
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.5.0/jszip.js"></script>
 <script type="text/javascript">
-	
-(function () {
-  if (!window.FileReader || !window.ArrayBuffer) {
-    $("#error_block").removeClass("hidden").addClass("show");
-    return;
-  }
+
 
 var $result = $("#result");
 $("#file").on("change", function(evt) {
@@ -91,7 +86,7 @@ $("#file").on("change", function(evt) {
 
 
 
-})();
+
 
 </script>
 <!--
