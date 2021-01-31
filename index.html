@@ -2,12 +2,25 @@
 <html>
 <head>
 <style>
-	div{
-		width: 400px;
-		border:5px solid blue;
-		padding: 10px;
-		margin: 10px;
-	}
+
+.column {
+  	float: left;
+  	width: 50%;
+  	padding: 10px 10px;
+}
+
+.row:after {
+  	content: "";
+  	display: table;
+  	clear: both;
+}
+
+div{
+	width: 400px;
+	border:5px solid blue;
+	padding: 10px;
+	margin: 10px;
+}
 </style>	
 </head>
 	<body>
@@ -23,7 +36,13 @@
 	<button type="button" onClick="getfilepath()">import</button>
 	
 	-->
-	<div id="pathoutput"></div>
+	<div>
+		<div class="row">
+			<div class="column" id="pathoutput">
+				
+			</div>
+		</div>
+	</div>
 
 	</body>
 
