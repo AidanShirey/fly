@@ -1,4 +1,5 @@
-var zip = new JSZip();
+// CODE FOR OPENING A FILE -- READING
+var fr = new FileReader();
 var $result = $("#result");
 $("#file").on("change", function(evt) {
     // remove content
@@ -16,7 +17,7 @@ $("#file").on("change", function(evt) {
         $result.append($fileContent);
 
         var dateBefore = new Date();
-        new JSZip.loadAsync(f)                                   // 1) read the Blob
+        JSZip.loadAsync(f)                                   // 1) read the Blob
         .then(function(zip) {
             var dateAfter = new Date();
             $title.append($("<span>", {
