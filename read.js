@@ -12,7 +12,9 @@ $("#file").on("change", function(evt) {
         var $title = $("<h4>", {
             text : f.name
         });
-        var $fileContent = $("<ul>");
+        var $fileContent = $("<div id='output'>Content of Hello.txt: </div>");
+        var $rowContent = $("<div id='row' class='row'></div>");
+        $fileContent.append($rowContent);
         $result.append($title);
         $result.append($fileContent);
 
@@ -26,12 +28,9 @@ $("#file").on("change", function(evt) {
             }));
 
             zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
-                $fileContent.append($("<li>", {
+                $rowContent.append($("<div class='column'></div>", {
                     text : zipEntry.name
                 }));
-                if (zipEntry.name == "Hello.txt")
-                    var content = zip.file(zipEntry.name).async("string");
-                    $("#output").innerHTML += content;
             });
         }, function (e) {
             $result.append($("<div>", {
