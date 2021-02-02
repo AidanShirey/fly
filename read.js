@@ -12,7 +12,7 @@ $("#file").on("change", function(evt) {
         var $title = $("<h4>", {
             text : f.name
         });
-        var $fileContent = $("<div id='output'>Content of Hello.txt: </div>");
+        var $fileContent = $("<div id='output'> </div>");
         var $rowContent = $("<div id='row' class='row'></div>");
         $fileContent.append($rowContent);
         $result.append($title);
