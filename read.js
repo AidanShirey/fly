@@ -30,6 +30,7 @@ $("#file").on("change", function(evt) {
             zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
                 $rowContent.append($("<div>", {
                     "class": "column",
+                    "style": "background-color:#bbb;",
                     text : zipEntry.name
                 }));
             });
