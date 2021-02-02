@@ -1,6 +1,7 @@
 // CODE FOR OPENING A FILE -- READING
 var fr = new FileReader();
 var $result = $("#result");
+var fileP;
 $("#file").on("change", function(evt) {
     // remove content
     $result.html("");
@@ -28,11 +29,13 @@ $("#file").on("change", function(evt) {
             }));
 
             zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
-                $rowContent.append($("<div>", {
-                    "class": "column",
-                    "style": "background-color:#bbb;",
-                    text : zipEntry.name
-                }));
+                if (zipEntry.dir != true){
+                    $rowContent.append($("<div>", {
+                        "class": "column",
+                        "style": "background-color:#bbb;",
+                        text : zipEntry.name
+                    }));
+                }
             });
         }, function (e) {
             $result.append($("<div>", {
@@ -43,8 +46,29 @@ $("#file").on("change", function(evt) {
     }
 
     var files = evt.target.files;
+    fileP = files;
     for (var i = 0; i < files.length; i++) {
         handleFile(files[i]);
     }
 });
+
+// Code for outputting file content
+
+function previewFile(filenumber)
+{
+    var file = fileP[filenumber];
+    var reader = new FileReader();
+    reader.onload = (function(reader)
+        {
+            return function()
+            {
+                // Get file contents
+                var contents = reader.result;
+                // Output them to the preview window
+                $('#preview').innerHTML = contents;
+            }
+        })(reader);
+
+    reader.readAsText(file);
+}
 
