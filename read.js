@@ -1,5 +1,6 @@
 // CODE FOR OPENING A FILE -- READING
 var fr = new FileReader();
+var filecount = 1;
 var $result = $("#result");
 var fileP;
 $("#file").on("change", function(evt) {
@@ -32,9 +33,11 @@ $("#file").on("change", function(evt) {
                 if (zipEntry.dir != true){
                     $rowContent.append($("<div>", {
                         "class": "column",
+                        "value": filecount,
                         "style": "background-color:#bbb;",
                         text : zipEntry.name
                     }));
+                    filecount++;
                 }
             });
         }, function (e) {
