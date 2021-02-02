@@ -1,6 +1,6 @@
 // CODE FOR OPENING A FILE -- READING
 var fr = new FileReader();
-var filecount = 1;
+var filecount = 0;
 var $result = $("#result");
 var fileP;
 $("#file").on("change", function(evt) {
@@ -74,5 +74,6 @@ function previewFile(filenumber)
 
     reader.readAsText(file);
 }
+
 
 
