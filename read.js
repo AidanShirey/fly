@@ -1,8 +1,29 @@
-// CODE FOR OPENING A FILE -- READING
 var fr = new FileReader();
 var filecount = 0;
 var $result = $("#result");
 var fileP;
+
+
+// Code for outputting file content
+function previewFile(filenumber)
+{
+    var reader = new FileReader();
+    reader.onload = (function(reader)
+        {
+            return function()
+            {
+                // Get file contents
+                var contents = reader.result;
+                // Output them to the preview window
+                $('#preview').innerHTML = contents;
+            }
+        })(reader);
+
+    reader.readAsText(fileP[filenumber]);
+}
+
+
+// CODE FOR OPENING A FILE -- READING
 $("#file").on("change", function(evt) {
     // remove content
     $result.html("");
@@ -37,9 +58,15 @@ $("#file").on("change", function(evt) {
                         "style": "background-color:#bbb;",
                         text : zipEntry.name
                     }));
+                    zip.file(zipEntry.name).async('string').then(function (fileData) {
+                        // fileData is a string of the contents
+                        $('#preview').innerHTML += fileData;
+                    });
                     filecount++;
                 }
             });
+
+            
         }, function (e) {
             $result.append($("<div>", {
                 "class" : "alert alert-danger",
@@ -55,25 +82,9 @@ $("#file").on("change", function(evt) {
     }
 });
 
-// Code for outputting file content
 
-function previewFile(filenumber)
-{
-    var file = fileP[filenumber];
-    var reader = new FileReader();
-    reader.onload = (function(reader)
-        {
-            return function()
-            {
-                // Get file contents
-                var contents = reader.result;
-                // Output them to the preview window
-                $('#preview').innerHTML = contents;
-            }
-        })(reader);
 
-    reader.readAsText(file);
-}
+
 
 
 
