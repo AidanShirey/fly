@@ -5,22 +5,11 @@ var fileP;
 
 
 // Code for outputting file content
-function previewFile(filenumber)
+function previewFile(value)
 {
-    var reader = new FileReader();
-    reader.onload = (function(reader)
-        {
-            return function()
-            {
-                // Get file contents
-                var contents = reader.result;
-                // Output them to the preview window
-                $('#preview').innerHTML = contents;
-            }
-        })(reader);
-
-    reader.readAsText(fileP[filenumber]);
+    document.getElementById("preview").innerHTML = value;                 
 }
+
 
 
 // CODE FOR OPENING A FILE -- READING
@@ -52,15 +41,23 @@ $("#file").on("change", function(evt) {
 
             zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
                 if (zipEntry.dir != true){
-                    $rowContent.append($("<div>", {
-                        "class": "column",
-                        "value": filecount,
-                        "style": "background-color:#bbb;",
-                        text : zipEntry.name
-                    }));
                     zip.file(zipEntry.name).async('string').then(function (fileData) {
                         // fileData is a string of the contents
-                        document.getElementById("preview").innerHTML += fileData;
+                        var content = fileData.split("\n");
+                        content = content.slice(0, content.length - 1);
+                        var $filecol = $("<div>", {
+                            "id": zipEntry.name,
+                            "class": "column",
+                            "value": content,
+                            "style": "background-color:#bbb;",
+                            text : zipEntry.name
+                        });
+                        var $previewButton = $("<button>",{
+                            text : "preview",
+                            "onclick": "previewFile('"+ content +"')"
+                        });
+                        $filecol.append($previewButton);
+                        $rowContent.append($filecol); 
                     });
                     filecount++;
                 }
