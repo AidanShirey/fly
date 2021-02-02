@@ -14,7 +14,7 @@ $("#file").on("change", function(evt) {
         });
         var $fileContent = $("<div id='output'> </div>");
         var $rowContent = $("<div id='row' class='row'></div>");
-        $fileContent.append($rowContent);
+        $fileContent.appendChild($rowContent);
         $result.append($title);
         $result.append($fileContent);
 
