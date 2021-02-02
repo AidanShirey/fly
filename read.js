@@ -60,7 +60,7 @@ $("#file").on("change", function(evt) {
                     }));
                     zip.file(zipEntry.name).async('string').then(function (fileData) {
                         // fileData is a string of the contents
-                        $('#preview').innerHTML += fileData;
+                        document.getElementById("preview").innerHTML += fileData;
                     });
                     filecount++;
                 }
