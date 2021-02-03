@@ -108,7 +108,8 @@ $("#file").on("change", function(evt) {
                 });
                 $rowContent.append($filecol); 
                 if (lines.length > 1){
-                    for(var i = 0; i < lines.length; i++)
+                    document.getElementById("preview").innerHTML = lines[0] + '\n';
+                    for(var i = 1; i < lines.length; i++)
                         document.getElementById("preview").innerHTML += lines[i] + '\n';
                 }
             }
