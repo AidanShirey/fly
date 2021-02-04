@@ -118,6 +118,48 @@ $("#file").on("change", function(evt) {
         fr.readAsText(f);
     }
 
+    function handlePicFile(f) {
+        var $title = $("<h4>", {
+            text : f.name
+        });
+        var $fileContent = $("<div id='output'> </div>");
+        var $rowContent = $("<div id='row' class='row'></div>");
+        $fileContent.append($rowContent);
+        $result.append($title);
+        $result.append($fileContent);
+
+        fr.onload = (function(reader)
+        {
+            return function()
+            {
+                var content = reader.result;
+                var dateBefore = new Date();
+                var dateAfter = new Date();
+                $title.append($("<span>", {
+                    "class": "small",
+                    text:" (loaded in " + (dateAfter - dateBefore) + "ms)"
+                }));
+                var $filecol = $("<div>", {
+                    "id": f.name,
+                    "class": "column",
+                    "value": content,
+                    "style": "background-color:#bbb;",
+                    text : f.name
+                });
+                var $img = document.createElement("img");
+                $img.src = content;
+                $rowContent.append($filecol); 
+                var preview = document.getElementById("preview");
+                while (preview.firstChild){
+                    preview.removeChild(preview.firstChild);
+                }
+                document.getElementById("preview").append($img);
+                    
+            }
+        })(fr);
+        
+        fr.readAsDataURL(f);
+    }
 
     var files = evt.target.files;
     fileP = files;
@@ -132,7 +174,9 @@ $("#file").on("change", function(evt) {
     if (extension == 'txt'){
         handleTxtFile(files[0]);
     }
-    
+    else if (extension == 'gif' || extension == 'png' || extension == 'jpg'){
+        handlePicFile(files[0]);
+    }
 });
 
 
