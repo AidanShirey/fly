@@ -12,7 +12,19 @@
 .column {
   	float: left;
   	width: 100%;
+
   	
+}
+
+.columnview {
+	float:left;
+	width: 50%;
+	height: 400px;
+}
+
+.columnhead {
+	float:left;
+	width: 50%;
 }
 
 .row:after {
@@ -28,7 +40,7 @@ body{
 }
 
 div{
-	width: 400px;
+	width: 800px;
 	padding:10px 0px;
 }
 </style>	
@@ -40,26 +52,29 @@ div{
 	<p>Upload your file below!</p>
 
 	<input type="file" id="file" name="file" multiple /><br />
+	<div class="row">
+		<div class="columnhead"><h4>File Content:</h4></div>
+		<div class="columnhead"><h4>Preview Content:</h4></div>
+	</div>
 
-	<h4>File Content:</h4>
-
-	<div id="result_block" class="hidden">
-  		<div id="result" style="background-color:#aaa;">
+	<div id="result_block" class="row">
+  		<div id="result" class="columnview" style="background-color:#aaa;">
   			
   		</div>
-	</div>
-
-
-	<h4>Preview Content:</h4>
-
-	<div id="preview" style="background-color:#aaa;">
+  		<div id="preview" class="columnview"  style="background-color:#ccc;">
 		
+		</div>
 	</div>
+
+
+
+	
 
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.5.0/jszip.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<script src="dist/libunrar.js"></script>
 <script src="read.js"></script>
 
 </html>

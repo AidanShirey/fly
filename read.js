@@ -170,8 +170,7 @@ $("#file").on("change", function(evt) {
             handleZipFile(files[i]);
         }
     }
-
-    if (extension == 'txt'){
+    else if (extension == 'txt'){
         handleTxtFile(files[0]);
     }
     else if (extension == 'gif' || extension == 'png' || extension == 'jpg'){
