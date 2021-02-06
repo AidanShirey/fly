@@ -46,29 +46,21 @@ $("#file").on("change", function(evt) {
 
     // Closure to capture the file information.
     function handleZipFile(f) {
-        var $title = $("<h4>", {
-            text : f.name
-        });
         var $fileContent = $("<div id='output'> </div>");
         var $rowContent = $("<div id='row' class='row'></div>");
         $fileContent.append($rowContent);
-        $result.append($title);
         $result.append($fileContent);
 
         var dateBefore = new Date();
         JSZip.loadAsync(f)                                   // 1) read the Blob
         .then(function(zip) {
             var dateAfter = new Date();
-            $title.append($("<span>", {
-                "class": "small",
-                text:" (loaded in " + (dateAfter - dateBefore) + "ms)"
-            }));
 
             zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
                 if (zipEntry.dir != true){
                     var filename = zipEntry.name;
                     var extension = filename.substr(filename.lastIndexOf('.') + 1);
-                    if (extension == 'txt'){
+                    if (extension == 'txt' || extension == 'svg'){
                         zip.file(zipEntry.name).async('string').then(function (fileData) {
                         // fileData is a string of the contents
                         var content = fileData.split("\n");
@@ -121,14 +113,11 @@ $("#file").on("change", function(evt) {
         });
     }
 
+    // Code for unpacking single txt files
     function handleTxtFile(f) {
-        var $title = $("<h4>", {
-            text : f.name
-        });
         var $fileContent = $("<div id='output'> </div>");
         var $rowContent = $("<div id='row' class='row'></div>");
         $fileContent.append($rowContent);
-        $result.append($title);
         $result.append($fileContent);
 
         fr.onload = (function(reader)
@@ -140,10 +129,6 @@ $("#file").on("change", function(evt) {
                 var lines = content.split('\n');
                 var dateBefore = new Date();
                 var dateAfter = new Date();
-                $title.append($("<span>", {
-                    "class": "small",
-                    text:" (loaded in " + (dateAfter - dateBefore) + "ms)"
-                }));
                 var $filecol = $("<div>", {
                     "id": f.name,
                     "class": "column",
@@ -163,14 +148,11 @@ $("#file").on("change", function(evt) {
         fr.readAsText(f);
     }
 
+    // Code for unpacking single picture files
     function handlePicFile(f) {
-        var $title = $("<h4>", {
-            text : f.name
-        });
         var $fileContent = $("<div id='output'> </div>");
         var $rowContent = $("<div id='row' class='row'></div>");
         $fileContent.append($rowContent);
-        $result.append($title);
         $result.append($fileContent);
 
         fr.onload = (function(reader)
@@ -180,10 +162,6 @@ $("#file").on("change", function(evt) {
                 var content = reader.result;
                 var dateBefore = new Date();
                 var dateAfter = new Date();
-                $title.append($("<span>", {
-                    "class": "small",
-                    text:" (loaded in " + (dateAfter - dateBefore) + "ms)"
-                }));
                 var $filecol = $("<div>", {
                     "id": f.name,
                     "class": "column",
