@@ -177,6 +177,42 @@ $("#file").on("change", function(evt) {
         fr.readAsText(f);
     }
 
+    // Code for unpacking single docx files
+    function handleDocFile(f) {
+        var $fileContent = $("<div id='output'> </div>");
+        var $rowContent = $("<div id='row' class='row'></div>");
+        $fileContent.append($rowContent);
+        $result.append($fileContent);
+
+        fr.onload = (function(reader) {
+            return function() {
+                var arrayBuffer = reader.result;
+                var $filecol = $("<div>", {
+                    "id": f.name,
+                    "class": "column",
+                    text: f.name
+                });
+                mammoth.convertToHtml({arrayBuffer: arrayBuffer})
+                    .then(function(result) {
+                        var html = result.value; // The generated HTML
+                        var $div = document.createElement("div");
+                        $div.setAttribute('class', 'previewcontainer');
+                        var preview = document.getElementById("preview");
+                        while (preview.firstChild) {
+                            preview.removeChild(preview.firstChild);
+                        }
+                        $div.innerHTML += html;
+                        document.getElementById("preview").append($div);
+                    })
+                    .done();
+            }
+        })(fr);
+
+        fr.readAsArrayBuffer(f);
+
+
+    }
+
     // Code for unpacking single picture files
     function handlePicFile(f) {
         var $fileContent = $("<div id='output'> </div>");
@@ -214,16 +250,19 @@ $("#file").on("change", function(evt) {
     fileP = files;
     var filename = files[0].name;
     var extension = filename.substr(filename.lastIndexOf('.') + 1);
-    if (extension == 'zip') {
+    if (extension == 'zip' || extension == 'ZIP') {
         for (var i = 0; i < files.length; i++) {
             handleZipFile(files[i]);
         }
     }
-    else if (extension == 'txt') {
+    else if (extension == 'txt' || extension == 'svg' || extension == 'TXT' || extension == 'SVG') {
         handleTxtFile(files[0]);
     }
-    else if (extension == 'gif' || extension == 'png' || extension == 'jpg') {
+    else if (extension == 'gif' || extension == 'GIF' || extension == 'png' || extension == 'PNG' || extension == 'jpg' || extension == 'JPG') {
         handlePicFile(files[0]);
+    }
+    else if (extension == 'docx' || extension == 'DOCX') {
+        handleDocFile(files[0]);
     }
 });
 
