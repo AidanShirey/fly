@@ -78,25 +78,29 @@ $("#file").on("change", function(evt) {
 
             zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
                 if (zipEntry.dir != true){
-                    var filename = zipEntry.name;
-                    var extension = filename.substr(filename.lastIndexOf('.') + 1);
+                    var filedirectory = zipEntry.name;
+                    var filename = filedirectory.substr(filedirectory.lastIndexOf('/') + 1);
+                    var extension = filedirectory.substr(filedirectory.lastIndexOf('.') + 1);
                     if (extension == 'txt' || extension == 'svg'){
                         zip.file(zipEntry.name).async('string').then(function (fileData) {
                         // fileData is a string of the contents
                         var content = fileData.split("\n");
                         content = content.slice(0, content.length - 1);
                         var $filecol = $("<div>", {
-                            "id": zipEntry.name,
+                            "id": filename,
                             "class": "column",
-                            "value": content,
-                            "style": "background-color:#bbb;",
-                            text : zipEntry.name
+                            "value": content
                         });
-                        var $previewButton = $("<button>",{
-                            text : "preview",
+                        var $filecard = $("<div>",{
+                            "class": "filecard",
                             "onclick": "previewZipFile('"+ content +"','" + zipEntry.name + "')"
                         });
-                        $filecol.append($previewButton);
+                        var $filecolcontainer = $("<div>",{
+                            "class": "filecontainer",
+                            text: filename
+                        });
+                        $filecard.append($filecolcontainer);
+                        $filecol.append($filecard);
                         $rowContent.append($filecol); 
                     });
                     filecount++;
@@ -106,17 +110,20 @@ $("#file").on("change", function(evt) {
                         // fileData is a string of the contents
                             var content = "data:blob;base64," + fileData;
                             var $filecol = $("<div>", {
-                                "id": zipEntry.name,
-                                "class": "column",
-                                "value": content,
-                                "style": "background-color:#bbb;",
-                                text : zipEntry.name
+                            "id": filename,
+                            "class": "column",
+                            "value": content
                             });
-                            var $previewButton = $("<button>",{
-                                text : "preview",
+                            var $filecard = $("<div>",{
+                                "class": "filecard",
                                 "onclick": "previewZipFile('"+ content +"','" + zipEntry.name + "')"
                             });
-                            $filecol.append($previewButton);
+                            var $filecolcontainer = $("<div>",{
+                                "class": "filecontainer",
+                                text: filename
+                            });
+                            $filecard.append($filecolcontainer);
+                            $filecol.append($filecard);
                             $rowContent.append($filecol); 
                         });
                         filecount++;
@@ -153,12 +160,10 @@ $("#file").on("change", function(evt) {
                     "id": f.name,
                     "class": "column",
                     "value": content,
-                    "style": "background-color:#bbb;",
                     text : f.name
                 });
                 var $div = document.createElement("div");
                 $div.setAttribute('class','previewcontainer');
-                $rowContent.append($filecol); 
                 var preview = document.getElementById("preview");
                 while (preview.firstChild){
                     preview.removeChild(preview.firstChild);
@@ -193,13 +198,11 @@ $("#file").on("change", function(evt) {
                     "id": f.name,
                     "class": "column",
                     "value": content,
-                    "style": "background-color:#bbb;",
                     text : f.name
                 });
                 var $img = document.createElement("img");
                 $img.src = content;
-                $img.setAttribute('class','previewcontainer');
-                $rowContent.append($filecol); 
+                $img.setAttribute('class','previewcontainer'); 
                 var preview = document.getElementById("preview");
                 while (preview.firstChild){
                     preview.removeChild(preview.firstChild);
