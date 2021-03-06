@@ -10,11 +10,21 @@ function previewZipFile(value, name)
     var extension = name.substr(name.lastIndexOf('.') + 1);
     if (extension == 'txt'){
         var lines = value.split('\n');
+        var $div = document.createElement("div");
+        $div.setAttribute('class','previewcontainer');
+        var preview = document.getElementById("preview");
+        while (preview.firstChild){
+            preview.removeChild(preview.firstChild);
+        } 
         if (lines.length > 1){
-            for(var i = 0; i < lines.length; i++)
-                document.getElementById("preview").innerHTML += value;
+            $div.innerHTML = lines[0] + '\n';
+            for(var i = 1; i < lines.length; i++)
+                $div.innerHTML += lines[i] + '\n';
         }
-        document.getElementById("preview").innerHTML = value;
+        else{
+            $div.innerHTML += value;
+        }
+        document.getElementById("preview").append($div);
     }
     else if (extension == 'gif' || extension == 'png' || extension == 'jpg'){
         var $img = document.createElement("img");
@@ -146,12 +156,19 @@ $("#file").on("change", function(evt) {
                     "style": "background-color:#bbb;",
                     text : f.name
                 });
+                var $div = document.createElement("div");
+                $div.setAttribute('class','previewcontainer');
                 $rowContent.append($filecol); 
+                var preview = document.getElementById("preview");
+                while (preview.firstChild){
+                    preview.removeChild(preview.firstChild);
+                } 
                 if (lines.length > 1){
-                    document.getElementById("preview").innerHTML = lines[0] + '\n';
+                    $div.innerHTML = lines[0] + '\n';
                     for(var i = 1; i < lines.length; i++)
-                        document.getElementById("preview").innerHTML += lines[i] + '\n';
+                        $div.innerHTML += lines[i] + '\n';
                 }
+                document.getElementById("preview").append($div);
             }
         })(fr);
         
@@ -181,6 +198,7 @@ $("#file").on("change", function(evt) {
                 });
                 var $img = document.createElement("img");
                 $img.src = content;
+                $img.setAttribute('class','previewcontainer');
                 $rowContent.append($filecol); 
                 var preview = document.getElementById("preview");
                 while (preview.firstChild){
