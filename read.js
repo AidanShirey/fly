@@ -5,33 +5,32 @@ var fileP;
 
 
 // Code for outputting file content
-function previewZipFile(value, name)
-{
+function previewZipFile(value, name) {
     var extension = name.substr(name.lastIndexOf('.') + 1);
-    if (extension == 'txt'){
+    if (extension == 'txt') {
         var lines = value.split('\n');
         var $div = document.createElement("div");
-        $div.setAttribute('class','previewcontainer');
+        $div.setAttribute('class', 'previewcontainer');
         var preview = document.getElementById("preview");
-        while (preview.firstChild){
+        while (preview.firstChild) {
             preview.removeChild(preview.firstChild);
-        } 
-        if (lines.length > 1){
+        }
+        if (lines.length > 1) {
             $div.innerHTML = lines[0] + '\n';
-            for(var i = 1; i < lines.length; i++)
+            for (var i = 1; i < lines.length; i++)
                 $div.innerHTML += lines[i] + '\n';
         }
-        else{
+        else {
             $div.innerHTML += value;
         }
         document.getElementById("preview").append($div);
     }
-    else if (extension == 'gif' || extension == 'png' || extension == 'jpg'){
+    else if (extension == 'gif' || extension == 'png' || extension == 'jpg') {
         var $img = document.createElement("img");
         $img.src = value;
-        $img.setAttribute('class','previewcontainer');
+        $img.setAttribute('class', 'previewcontainer');
         var preview = document.getElementById("preview");
-        while (preview.firstChild){
+        while (preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
         document.getElementById("preview").append($img);
@@ -39,20 +38,20 @@ function previewZipFile(value, name)
     else {
         var lines = value.split('\n');
         var $img = document.createElement("div");
-        $img.setAttribute('class','previewcontainer');
-        if (lines.length > 1){
-            for(var i = 0; i < lines.length; i++)
+        $img.setAttribute('class', 'previewcontainer');
+        if (lines.length > 1) {
+            for (var i = 0; i < lines.length; i++)
                 $img.innerHTML += value;
         }
-        else{
+        else {
             $img.innerHTML = value;
         }
         var preview = document.getElementById("preview");
-        while (preview.firstChild){
+        while (preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
         document.getElementById("preview").append($img);
-    }          
+    }
 }
 
 
@@ -73,71 +72,71 @@ $("#file").on("change", function(evt) {
 
         var dateBefore = new Date();
         JSZip.loadAsync(f)                                   // 1) read the Blob
-        .then(function(zip) {
-            var dateAfter = new Date();
+            .then(function(zip) {
+                var dateAfter = new Date();
 
-            zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
-                if (zipEntry.dir != true){
-                    var filedirectory = zipEntry.name;
-                    var filename = filedirectory.substr(filedirectory.lastIndexOf('/') + 1);
-                    var extension = filedirectory.substr(filedirectory.lastIndexOf('.') + 1);
-                    if (extension == 'txt' || extension == 'svg'){
-                        zip.file(zipEntry.name).async('string').then(function (fileData) {
-                        // fileData is a string of the contents
-                        var content = fileData.split("\n");
-                        content = content.slice(0, content.length - 1);
-                        var $filecol = $("<div>", {
-                            "id": filename,
-                            "class": "column",
-                            "value": content
-                        });
-                        var $filecard = $("<div>",{
-                            "class": "filecard",
-                            "onclick": "previewZipFile('"+ content +"','" + zipEntry.name + "')"
-                        });
-                        var $filecolcontainer = $("<div>",{
-                            "class": "filecontainer",
-                            text: filename
-                        });
-                        $filecard.append($filecolcontainer);
-                        $filecol.append($filecard);
-                        $rowContent.append($filecol); 
-                    });
-                    filecount++;
+                zip.forEach(function(relativePath, zipEntry) {  // 2) print entries
+                    if (zipEntry.dir != true) {
+                        var filedirectory = zipEntry.name;
+                        var filename = filedirectory.substr(filedirectory.lastIndexOf('/') + 1);
+                        var extension = filedirectory.substr(filedirectory.lastIndexOf('.') + 1);
+                        if (extension == 'txt' || extension == 'svg') {
+                            zip.file(zipEntry.name).async('string').then(function(fileData) {
+                                // fileData is a string of the contents
+                                var content = fileData.split("\n");
+                                content = content.slice(0, content.length - 1);
+                                var $filecol = $("<div>", {
+                                    "id": filename,
+                                    "class": "column",
+                                    "value": content
+                                });
+                                var $filecard = $("<div>", {
+                                    "class": "filecard",
+                                    "onclick": "previewZipFile('" + content + "','" + zipEntry.name + "')"
+                                });
+                                var $filecolcontainer = $("<div>", {
+                                    "class": "filecontainer",
+                                    text: filename
+                                });
+                                $filecard.append($filecolcontainer);
+                                $filecol.append($filecard);
+                                $rowContent.append($filecol);
+                            });
+                            filecount++;
+                        }
+                        else if (extension == 'gif' || extension == 'png' || extension == 'jpg') {
+                            zip.file(zipEntry.name).async('base64').then(function(fileData) {
+                                // fileData is a string of the contents
+                                var content = "data:blob;base64," + fileData;
+                                var $filecol = $("<div>", {
+                                    "id": filename,
+                                    "class": "column",
+                                    "value": content
+                                });
+                                var $filecard = $("<div>", {
+                                    "class": "filecard",
+                                    "onclick": "previewZipFile('" + content + "','" + zipEntry.name + "')"
+                                });
+                                var $filecolcontainer = $("<div>", {
+                                    "class": "filecontainer",
+                                    text: filename
+                                });
+                                $filecard.append($filecolcontainer);
+                                $filecol.append($filecard);
+                                $rowContent.append($filecol);
+                            });
+                            filecount++;
+                        }
                     }
-                    else if (extension == 'gif' || extension == 'png' || extension == 'jpg'){
-                        zip.file(zipEntry.name).async('base64').then(function (fileData) {
-                        // fileData is a string of the contents
-                            var content = "data:blob;base64," + fileData;
-                            var $filecol = $("<div>", {
-                            "id": filename,
-                            "class": "column",
-                            "value": content
-                            });
-                            var $filecard = $("<div>",{
-                                "class": "filecard",
-                                "onclick": "previewZipFile('"+ content +"','" + zipEntry.name + "')"
-                            });
-                            var $filecolcontainer = $("<div>",{
-                                "class": "filecontainer",
-                                text: filename
-                            });
-                            $filecard.append($filecolcontainer);
-                            $filecol.append($filecard);
-                            $rowContent.append($filecol); 
-                        });
-                        filecount++;
-                    }
-                }
+                });
+
+
+            }, function(e) {
+                $result.append($("<div>", {
+                    "class": "alert alert-danger",
+                    text: "Error reading " + f.name + ": " + e.message
+                }));
             });
-
-            
-        }, function (e) {
-            $result.append($("<div>", {
-                "class" : "alert alert-danger",
-                text : "Error reading " + f.name + ": " + e.message
-            }));
-        });
     }
 
     // Code for unpacking single txt files
@@ -147,11 +146,9 @@ $("#file").on("change", function(evt) {
         $fileContent.append($rowContent);
         $result.append($fileContent);
 
-        fr.onload = (function(reader)
-        {
-            return function()
-            {
-                
+        fr.onload = (function(reader) {
+            return function() {
+
                 var content = reader.result;
                 var lines = content.split('\n');
                 var dateBefore = new Date();
@@ -160,23 +157,23 @@ $("#file").on("change", function(evt) {
                     "id": f.name,
                     "class": "column",
                     "value": content,
-                    text : f.name
+                    text: f.name
                 });
                 var $div = document.createElement("div");
-                $div.setAttribute('class','previewcontainer');
+                $div.setAttribute('class', 'previewcontainer');
                 var preview = document.getElementById("preview");
-                while (preview.firstChild){
+                while (preview.firstChild) {
                     preview.removeChild(preview.firstChild);
-                } 
-                if (lines.length > 1){
+                }
+                if (lines.length > 1) {
                     $div.innerHTML = lines[0] + '\n';
-                    for(var i = 1; i < lines.length; i++)
+                    for (var i = 1; i < lines.length; i++)
                         $div.innerHTML += lines[i] + '\n';
                 }
                 document.getElementById("preview").append($div);
             }
         })(fr);
-        
+
         fr.readAsText(f);
     }
 
@@ -187,10 +184,8 @@ $("#file").on("change", function(evt) {
         $fileContent.append($rowContent);
         $result.append($fileContent);
 
-        fr.onload = (function(reader)
-        {
-            return function()
-            {
+        fr.onload = (function(reader) {
+            return function() {
                 var content = reader.result;
                 var dateBefore = new Date();
                 var dateAfter = new Date();
@@ -198,20 +193,20 @@ $("#file").on("change", function(evt) {
                     "id": f.name,
                     "class": "column",
                     "value": content,
-                    text : f.name
+                    text: f.name
                 });
                 var $img = document.createElement("img");
                 $img.src = content;
-                $img.setAttribute('class','previewcontainer'); 
+                $img.setAttribute('class', 'previewcontainer');
                 var preview = document.getElementById("preview");
-                while (preview.firstChild){
+                while (preview.firstChild) {
                     preview.removeChild(preview.firstChild);
                 }
                 document.getElementById("preview").append($img);
-                    
+
             }
         })(fr);
-        
+
         fr.readAsDataURL(f);
     }
 
@@ -219,15 +214,15 @@ $("#file").on("change", function(evt) {
     fileP = files;
     var filename = files[0].name;
     var extension = filename.substr(filename.lastIndexOf('.') + 1);
-    if (extension == 'zip'){
+    if (extension == 'zip') {
         for (var i = 0; i < files.length; i++) {
             handleZipFile(files[i]);
         }
     }
-    else if (extension == 'txt'){
+    else if (extension == 'txt') {
         handleTxtFile(files[0]);
     }
-    else if (extension == 'gif' || extension == 'png' || extension == 'jpg'){
+    else if (extension == 'gif' || extension == 'png' || extension == 'jpg') {
         handlePicFile(files[0]);
     }
 });
