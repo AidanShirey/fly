@@ -19,6 +19,7 @@ function previewZipFile(value, name)
     else if (extension == 'gif' || extension == 'png' || extension == 'jpg'){
         var $img = document.createElement("img");
         $img.src = value;
+        $img.setAttribute('class','previewcontainer');
         var preview = document.getElementById("preview");
         while (preview.firstChild){
             preview.removeChild(preview.firstChild);
@@ -27,11 +28,18 @@ function previewZipFile(value, name)
     }
     else {
         var lines = value.split('\n');
+        var $img = document.createElement("div");
+        $img.setAttribute('class','previewcontainer');
         if (lines.length > 1){
         for(var i = 0; i < lines.length; i++)
-            document.getElementById("preview").innerHTML += value;
+            $img.innerHTML += value;
         }
-        document.getElementById("preview").innerHTML = value;
+        $img.innerHTML = value;
+        var preview = document.getElementById("preview");
+        while (preview.firstChild){
+            preview.removeChild(preview.firstChild);
+        }
+        document.getElementById("preview").append($img);
     }          
 }
 
