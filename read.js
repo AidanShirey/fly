@@ -11,8 +11,8 @@ function previewZipFile(value, name)
     if (extension == 'txt'){
         var lines = value.split('\n');
         if (lines.length > 1){
-        for(var i = 0; i < lines.length; i++)
-            document.getElementById("preview").innerHTML += value;
+            for(var i = 0; i < lines.length; i++)
+                document.getElementById("preview").innerHTML += value;
         }
         document.getElementById("preview").innerHTML = value;
     }
@@ -31,10 +31,12 @@ function previewZipFile(value, name)
         var $img = document.createElement("div");
         $img.setAttribute('class','previewcontainer');
         if (lines.length > 1){
-        for(var i = 0; i < lines.length; i++)
-            $img.innerHTML += value;
+            for(var i = 0; i < lines.length; i++)
+                $img.innerHTML += value;
         }
-        $img.innerHTML = value;
+        else{
+            $img.innerHTML = value;
+        }
         var preview = document.getElementById("preview");
         while (preview.firstChild){
             preview.removeChild(preview.firstChild);
