@@ -35,7 +35,7 @@ function previewZipFile(value, name) {
         }
         document.getElementById("preview").append($img);
     }
-    else {
+    else if (extension == 'svg') {
         var lines = value.split('\n');
         var $img = document.createElement("div");
         $img.setAttribute('class', 'previewcontainer');
@@ -51,6 +51,29 @@ function previewZipFile(value, name) {
             preview.removeChild(preview.firstChild);
         }
         document.getElementById("preview").append($img);
+    }
+    else {
+        var arrayBuffer = new TextDecoder().decode(value);
+        var $div = document.createElement("div");
+        $div.setAttribute('class', 'previewcontainer');
+        var preview = document.getElementById("preview");
+        while (preview.firstChild) {
+            preview.removeChild(preview.firstChild);
+        }
+        mammoth.convertToHtml({ arrayBuffer: arrayBuffer })
+                    .then(function(result) {
+                        var html = result.value; // The generated HTML
+                        var $div = document.createElement("div");
+                        $div.setAttribute('class', 'previewcontainer');
+                        var preview = document.getElementById("preview");
+                        while (preview.firstChild) {
+                            preview.removeChild(preview.firstChild);
+                        }
+                        $div.innerHTML += html;
+                        document.getElementById("preview").append($div);
+                    })
+                    .done();
+        document.getElementById("preview").append($div);
     }
 }
 
@@ -73,8 +96,6 @@ $("#file").on("change", function(evt) {
         var dateBefore = new Date();
         JSZip.loadAsync(f)                                   // 1) read the Blob
             .then(function(zip) {
-                var dateAfter = new Date();
-
                 zip.forEach(function(relativePath, zipEntry) {  // 2) print entries
                     if (zipEntry.dir != true) {
                         var filedirectory = zipEntry.name;
@@ -121,6 +142,32 @@ $("#file").on("change", function(evt) {
                                     "class": "filecontainer",
                                     text: filename
                                 });
+                                $filecard.append($filecolcontainer);
+                                $filecol.append($filecard);
+                                $rowContent.append($filecol);
+                            });
+                            filecount++;
+                        }
+                        else if (extension == 'docx' || extension == 'DOCX') {
+                            zip.file(zipEntry.name).async('arraybuffer').then(function(fileData) {
+                                // fileData is an arraybuffer of the contents
+                                var content = fileData;
+                                var $filecol = $("<div>", {
+                                    "id": filename,
+                                    "class": "column",
+                                    "value": content
+                                });
+                                var $filecard = $("<div>", {
+                                    "class": "filecard"
+                                });
+                                $filecard.click(function(){
+                                    previewZipFile(content, zipEntry.name);
+                                });
+                                var $filecolcontainer = $("<div>", {
+                                    "class": "filecontainer",
+                                    text: filename
+                                });
+
                                 $filecard.append($filecolcontainer);
                                 $filecol.append($filecard);
                                 $rowContent.append($filecol);
@@ -192,7 +239,7 @@ $("#file").on("change", function(evt) {
                     "class": "column",
                     text: f.name
                 });
-                mammoth.convertToHtml({arrayBuffer: arrayBuffer})
+                mammoth.convertToHtml({ arrayBuffer: arrayBuffer })
                     .then(function(result) {
                         var html = result.value; // The generated HTML
                         var $div = document.createElement("div");
@@ -209,8 +256,6 @@ $("#file").on("change", function(evt) {
         })(fr);
 
         fr.readAsArrayBuffer(f);
-
-
     }
 
     // Code for unpacking single picture files
@@ -251,9 +296,7 @@ $("#file").on("change", function(evt) {
     var filename = files[0].name;
     var extension = filename.substr(filename.lastIndexOf('.') + 1);
     if (extension == 'zip' || extension == 'ZIP') {
-        for (var i = 0; i < files.length; i++) {
-            handleZipFile(files[i]);
-        }
+        handleZipFile(files[0]);
     }
     else if (extension == 'txt' || extension == 'svg' || extension == 'TXT' || extension == 'SVG') {
         handleTxtFile(files[0]);
