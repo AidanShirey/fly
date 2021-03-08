@@ -52,7 +52,7 @@ function previewZipFile(value, name) {
         }
         document.getElementById("preview").append($img);
     }
-    else {
+    else if (extension == 'docx' || extension == 'DOCX'){
         var arrayBuffer = value;
         var $div = document.createElement("div");
         $div.setAttribute('class', 'previewcontainer');
@@ -122,8 +122,9 @@ $("#file").on("change", function(evt) {
                                 $filecard.append($filecolcontainer);
                                 $filecol.append($filecard);
                                 $rowContent.append($filecol);
+                                filecount++;
                             });
-                            filecount++;
+                            
                         }
                         else if (extension == 'gif' || extension == 'png' || extension == 'jpg') {
                             zip.file(zipEntry.name).async('base64').then(function(fileData) {
@@ -145,8 +146,9 @@ $("#file").on("change", function(evt) {
                                 $filecard.append($filecolcontainer);
                                 $filecol.append($filecard);
                                 $rowContent.append($filecol);
+                                filecount++;
                             });
-                            filecount++;
+                            
                         }
                         else if (extension == 'docx' || extension == 'DOCX') {
                             zip.file(zipEntry.name).async('arraybuffer').then(function(fileData) {
@@ -171,8 +173,9 @@ $("#file").on("change", function(evt) {
                                 $filecard.append($filecolcontainer);
                                 $filecol.append($filecard);
                                 $rowContent.append($filecol);
+                                filecount++;
                             });
-                            filecount++;
+                            
                         }
                     }
                 });
@@ -198,8 +201,6 @@ $("#file").on("change", function(evt) {
 
                 var content = reader.result;
                 var lines = content.split('\n');
-                var dateBefore = new Date();
-                var dateAfter = new Date();
                 var $filecol = $("<div>", {
                     "id": f.name,
                     "class": "column",
@@ -268,8 +269,6 @@ $("#file").on("change", function(evt) {
         fr.onload = (function(reader) {
             return function() {
                 var content = reader.result;
-                var dateBefore = new Date();
-                var dateAfter = new Date();
                 var $filecol = $("<div>", {
                     "id": f.name,
                     "class": "column",
