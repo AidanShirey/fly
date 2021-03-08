@@ -53,7 +53,7 @@ function previewZipFile(value, name) {
         document.getElementById("preview").append($img);
     }
     else {
-        var arrayBuffer = new TextDecoder().decode(value);
+        var arrayBuffer = value;
         var $div = document.createElement("div");
         $div.setAttribute('class', 'previewcontainer');
         var preview = document.getElementById("preview");
