@@ -80,9 +80,9 @@ function previewZipFile(value, name) {
 
 // CODE FOR OPENING A FILE -- READING
 $("#file").on("change", function(evt) {
-    // remove content
+    // Remove content
     $result.html("");
-    // be sure to show the results
+    // Be sure to show the results
     $("#result_block").removeClass("hidden").addClass("show");
     // Closure to capture the file information.
     function handleZipFile(f) {
@@ -302,10 +302,3 @@ $("#file").on("change", function(evt) {
         handleDocFile(files[0]);
     }
 });
-
-
-
-
-
-
-
