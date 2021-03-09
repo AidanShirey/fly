@@ -84,16 +84,12 @@ $("#file").on("change", function(evt) {
     $result.html("");
     // be sure to show the results
     $("#result_block").removeClass("hidden").addClass("show");
-
-
     // Closure to capture the file information.
     function handleZipFile(f) {
         var $fileContent = $("<div id='output'> </div>");
         var $rowContent = $("<div id='row' class='row'></div>");
         $fileContent.append($rowContent);
         $result.append($fileContent);
-
-        var dateBefore = new Date();
         JSZip.loadAsync(f)                                   // 1) read the Blob
             .then(function(zip) {
                 zip.forEach(function(relativePath, zipEntry) {  // 2) print entries
@@ -265,7 +261,6 @@ $("#file").on("change", function(evt) {
         var $rowContent = $("<div id='row' class='row'></div>");
         $fileContent.append($rowContent);
         $result.append($fileContent);
-
         fr.onload = (function(reader) {
             return function() {
                 var content = reader.result;
