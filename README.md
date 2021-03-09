@@ -28,4 +28,4 @@ As of the most recent iteration, Fly supports .txt, .docx, .svg, .png, .jpg, and
 
 **Why does my supported file not open?**
 
-The zip file extraction features this service uses are dependent are listed above.
+The zip file extraction features this service uses are dependent on the libraries listed above.
