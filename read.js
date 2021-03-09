@@ -28,7 +28,7 @@ function previewZipFile(value, name) {
     else if (extension == 'gif' || extension == 'png' || extension == 'jpg') {
         var $img = document.createElement("img");
         $img.src = value;
-        $img.setAttribute('class', 'previewcontainer');
+        $img.setAttribute('class', 'emptypreview');
         var preview = document.getElementById("preview");
         while (preview.firstChild) {
             preview.removeChild(preview.firstChild);
@@ -38,7 +38,7 @@ function previewZipFile(value, name) {
     else if (extension == 'svg') {
         var lines = value.split('\n');
         var $img = document.createElement("div");
-        $img.setAttribute('class', 'previewcontainer');
+        $img.setAttribute('class', 'emptypreview');
         if (lines.length > 1) {
             for (var i = 0; i < lines.length; i++)
                 $img.innerHTML += value;
