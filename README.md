@@ -1,5 +1,5 @@
 # Fly - The Online Zip File Previewer
-Want to glance at the content of a zip file? Don't want to clutter your computer with unzipping software? Maybe you just don't trust the person who gave you the file in the first place. Just upload your file and click on the cards below to view.
+Want to glance at the content of a zip file? Don't want to clutter your computer with unzipping software? Maybe you just don't trust the person who gave you the file in the first place. Fly solves these problems by extracting the content from zip files and allows the user to preview files without having to extract them to their computer.
 
 # Libraries Used
 **JSZip:** Used to unpack the locally uploaded files.
@@ -25,3 +25,7 @@ This service does not currently show files that it doesn't know how to handle pr
 **What file types are supported?**
 
 As of the most recent iteration, Fly supports .txt, .docx, .svg, .png, .jpg, and .gif files.
+
+**Why does my supported file not open?**
+
+The zip file extraction features this service uses are dependent are listed above.
