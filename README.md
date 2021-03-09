@@ -14,7 +14,9 @@ Link to JQuery: https://github.com/jquery/jquery
 
 Link to mammoth.js: https://github.com/mwilliamson/mammoth.js/
 
-# Link to Github Page
+# How to use
+This service is hosted via Github Pages, and can be accessed with the link below.
+
 https://aidanshirey.github.io/fly/
 
 # Q & A
