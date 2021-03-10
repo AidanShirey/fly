@@ -52,7 +52,7 @@ function previewZipFile(value, name) {
         }
         document.getElementById("preview").append($img);
     }
-    else if (extension == 'docx' || extension == 'DOCX'){
+    else if (extension == 'docx' || extension == 'DOCX') {
         var arrayBuffer = value;
         var $div = document.createElement("div");
         $div.setAttribute('class', 'previewcontainer');
@@ -61,18 +61,18 @@ function previewZipFile(value, name) {
             preview.removeChild(preview.firstChild);
         }
         mammoth.convertToHtml({ arrayBuffer: arrayBuffer })
-                    .then(function(result) {
-                        var html = result.value; // The generated HTML
-                        var $div = document.createElement("div");
-                        $div.setAttribute('class', 'previewcontainer');
-                        var preview = document.getElementById("preview");
-                        while (preview.firstChild) {
-                            preview.removeChild(preview.firstChild);
-                        }
-                        $div.innerHTML += html;
-                        document.getElementById("preview").append($div);
-                    })
-                    .done();
+            .then(function(result) {
+                var html = result.value; // The generated HTML
+                var $div = document.createElement("div");
+                $div.setAttribute('class', 'previewcontainer');
+                var preview = document.getElementById("preview");
+                while (preview.firstChild) {
+                    preview.removeChild(preview.firstChild);
+                }
+                $div.innerHTML += html;
+                document.getElementById("preview").append($div);
+            })
+            .done();
         document.getElementById("preview").append($div);
     }
 }
@@ -88,12 +88,14 @@ $("#file").on("change", function(evt) {
     function handleZipFile(f) {
         var $fileContent = $("<div id='output'> </div>");
         var $rowContent = $("<div id='row' class='row'></div>");
+        var $newrow = $("<div class='row'></div>");
         $fileContent.append($rowContent);
         $result.append($fileContent);
         JSZip.loadAsync(f)                                   // 1) read the Blob
             .then(function(zip) {
                 zip.forEach(function(relativePath, zipEntry) {  // 2) print entries
                     if (zipEntry.dir != true) {
+                        // if (filecount % 4 == 0) { $result.append($newrow); }
                         var filedirectory = zipEntry.name;
                         var filename = filedirectory.substr(filedirectory.lastIndexOf('/') + 1);
                         var extension = filedirectory.substr(filedirectory.lastIndexOf('.') + 1);
@@ -120,7 +122,7 @@ $("#file").on("change", function(evt) {
                                 $rowContent.append($filecol);
                                 filecount++;
                             });
-                            
+
                         }
                         else if (extension == 'gif' || extension == 'png' || extension == 'jpg') {
                             zip.file(zipEntry.name).async('base64').then(function(fileData) {
@@ -144,7 +146,7 @@ $("#file").on("change", function(evt) {
                                 $rowContent.append($filecol);
                                 filecount++;
                             });
-                            
+
                         }
                         else if (extension == 'docx' || extension == 'DOCX') {
                             zip.file(zipEntry.name).async('arraybuffer').then(function(fileData) {
@@ -158,7 +160,7 @@ $("#file").on("change", function(evt) {
                                 var $filecard = $("<div>", {
                                     "class": "filecard"
                                 });
-                                $filecard.click(function(){
+                                $filecard.click(function() {
                                     previewZipFile(content, zipEntry.name);
                                 });
                                 var $filecolcontainer = $("<div>", {
@@ -171,7 +173,7 @@ $("#file").on("change", function(evt) {
                                 $rowContent.append($filecol);
                                 filecount++;
                             });
-                            
+
                         }
                     }
                 });
