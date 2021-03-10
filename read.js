@@ -1,5 +1,6 @@
 var fr = new FileReader();
 var filecount = 0;
+var rowcount = 0;
 var $result = $("#result");
 var fileP;
 
@@ -88,14 +89,18 @@ $("#file").on("change", function(evt) {
     function handleZipFile(f) {
         var $fileContent = $("<div id='output'> </div>");
         var $rowContent = $("<div id='row' class='row'></div>");
-        var $newrow = $("<div class='row'></div>");
-        $fileContent.append($rowContent);
+        // $fileContent.append($rowContent);
         $result.append($fileContent);
         JSZip.loadAsync(f)                                   // 1) read the Blob
             .then(function(zip) {
                 zip.forEach(function(relativePath, zipEntry) {  // 2) print entries
                     if (zipEntry.dir != true) {
-                        // if (filecount % 4 == 0) { $result.append($newrow); }
+                        if (filecount % 4 == 0 && filecount != 0) {
+                            filecount = 0;
+                            rowcount++;
+                            var $newrow = $("<div id='row" + rowcount + "' class='row'></div>");
+                            $result.append($newrow);
+                        }
                         var filedirectory = zipEntry.name;
                         var filename = filedirectory.substr(filedirectory.lastIndexOf('/') + 1);
                         var extension = filedirectory.substr(filedirectory.lastIndexOf('.') + 1);
@@ -119,6 +124,13 @@ $("#file").on("change", function(evt) {
                                 });
                                 $filecard.append($filecolcontainer);
                                 $filecol.append($filecard);
+                                if (filecount % 4 == 0) {
+                                    filecount = 0;
+                                    rowcount++;
+                                    var $newrow = $("<div id='row" + rowcount + "' class='row'></div>");
+                                    $result.append($newrow);
+                                    $rowContent = $newrow;
+                                }
                                 $rowContent.append($filecol);
                                 filecount++;
                             });
@@ -143,6 +155,13 @@ $("#file").on("change", function(evt) {
                                 });
                                 $filecard.append($filecolcontainer);
                                 $filecol.append($filecard);
+                                if (filecount % 4 == 0) {
+                                    filecount = 0;
+                                    rowcount++;
+                                    var $newrow = $("<div id='row" + rowcount + "' class='row'></div>");
+                                    $result.append($newrow);
+                                    $rowContent = $newrow;
+                                }
                                 $rowContent.append($filecol);
                                 filecount++;
                             });
@@ -170,6 +189,13 @@ $("#file").on("change", function(evt) {
 
                                 $filecard.append($filecolcontainer);
                                 $filecol.append($filecard);
+                                if (filecount % 4 == 0) {
+                                    filecount = 0;
+                                    rowcount++;
+                                    var $newrow = $("<div id='row" + rowcount + "' class='row'></div>");
+                                    $result.append($newrow);
+                                    $rowContent = $newrow;
+                                }
                                 $rowContent.append($filecol);
                                 filecount++;
                             });
