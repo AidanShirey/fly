@@ -89,6 +89,7 @@ $("#file").on("change", function(evt) {
     function handleZipFile(f) {
         var $fileContent = $("<div id='output'> </div>");
         var $rowContent = $("<div id='row' class='row'></div>");
+        filecount = 0;
         // $fileContent.append($rowContent);
         $result.append($fileContent);
         JSZip.loadAsync(f)                                   // 1) read the Blob
@@ -103,16 +104,16 @@ $("#file").on("change", function(evt) {
                         }
                         var filedirectory = zipEntry.name;
                         var filename = filedirectory.substr(filedirectory.lastIndexOf('/') + 1);
-                        var extension = filedirectory.substr(filedirectory.lastIndexOf('.') + 1);
-                        if (extension == 'txt' || extension == 'svg') {
+                        var extensionz = filedirectory.substr(filedirectory.lastIndexOf('.') + 1);
+                        var extensionzip = extensionz.toLowerCase();
+                        if (extensionzip == 'txt' || extensionzip == 'svg') {
                             zip.file(zipEntry.name).async('string').then(function(fileData) {
                                 // fileData is a string of the contents
                                 var content = fileData.split("\n");
                                 content = content.slice(0, content.length - 1);
                                 var $filecol = $("<div>", {
                                     "id": filename,
-                                    "class": "column",
-                                    "value": content
+                                    "class": "column"
                                 });
                                 var $filecard = $("<div>", {
                                     "class": "filecard",
@@ -136,14 +137,13 @@ $("#file").on("change", function(evt) {
                             });
 
                         }
-                        else if (extension == 'gif' || extension == 'png' || extension == 'jpg') {
+                        else if (extensionzip == 'gif' || extensionzip == 'png' || extensionzip == 'jpg') {
                             zip.file(zipEntry.name).async('base64').then(function(fileData) {
                                 // fileData is a string of the contents
                                 var content = "data:blob;base64," + fileData;
                                 var $filecol = $("<div>", {
                                     "id": filename,
-                                    "class": "column",
-                                    "value": content
+                                    "class": "column"
                                 });
                                 var $filecard = $("<div>", {
                                     "class": "filecard",
@@ -167,14 +167,13 @@ $("#file").on("change", function(evt) {
                             });
 
                         }
-                        else if (extension == 'docx' || extension == 'DOCX') {
+                        else if (extensionzip == 'docx') {
                             zip.file(zipEntry.name).async('arraybuffer').then(function(fileData) {
                                 // fileData is an arraybuffer of the contents
                                 var content = fileData;
                                 var $filecol = $("<div>", {
                                     "id": filename,
-                                    "class": "column",
-                                    "value": content
+                                    "class": "column"
                                 });
                                 var $filecard = $("<div>", {
                                     "class": "filecard"
@@ -316,17 +315,18 @@ $("#file").on("change", function(evt) {
     var files = evt.target.files;
     fileP = files;
     var filename = files[0].name;
-    var extension = filename.substr(filename.lastIndexOf('.') + 1);
-    if (extension == 'zip' || extension == 'ZIP') {
+    var extensioncon = filename.substr(filename.lastIndexOf('.') + 1);
+    var extension = extensioncon.toLowerCase();
+    if (extension == 'zip') {
         handleZipFile(files[0]);
     }
-    else if (extension == 'txt' || extension == 'svg' || extension == 'TXT' || extension == 'SVG') {
+    else if (extension == 'txt' || extension == 'svg') {
         handleTxtFile(files[0]);
     }
-    else if (extension == 'gif' || extension == 'GIF' || extension == 'png' || extension == 'PNG' || extension == 'jpg' || extension == 'JPG') {
+    else if (extension == 'gif' || extension == 'png' || extension == 'jpg') {
         handlePicFile(files[0]);
     }
-    else if (extension == 'docx' || extension == 'DOCX') {
+    else if (extension == 'docx') {
         handleDocFile(files[0]);
     }
 });
