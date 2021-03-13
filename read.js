@@ -7,19 +7,19 @@ var fileP;
 
 // Code for outputting file content
 function previewZipFile(value, name) {
-    var extension = name.substr(name.lastIndexOf('.') + 1);
+    var extensionf = name.substr(name.lastIndexOf('.') + 1);
+    var extension = extensionf.toLowerCase();
     if (extension == 'txt') {
-        var lines = value.split('\n');
         var $div = document.createElement("div");
         $div.setAttribute('class', 'previewcontainer');
         var preview = document.getElementById("preview");
         while (preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
-        if (lines.length > 1) {
-            $div.innerHTML = lines[0] + '\n';
-            for (var i = 1; i < lines.length; i++)
-                $div.innerHTML += lines[i] + '\n';
+        if (value.length > 1) {
+            $div.innerHTML = value[0] + '\n';
+            for (var i = 1; i < value.length; i++)
+                $div.innerHTML += value[i] + '\n';
         }
         else {
             $div.innerHTML += value;
@@ -37,23 +37,16 @@ function previewZipFile(value, name) {
         document.getElementById("preview").append($img);
     }
     else if (extension == 'svg') {
-        var lines = value.split('\n');
         var $img = document.createElement("div");
         $img.setAttribute('class', 'emptypreview');
-        if (lines.length > 1) {
-            for (var i = 0; i < lines.length; i++)
-                $img.innerHTML += value;
-        }
-        else {
-            $img.innerHTML = value;
-        }
+        $img.innerHTML = value;
         var preview = document.getElementById("preview");
         while (preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
         document.getElementById("preview").append($img);
     }
-    else if (extension == 'docx' || extension == 'DOCX') {
+    else if (extension == 'docx') {
         var arrayBuffer = value;
         var $div = document.createElement("div");
         $div.setAttribute('class', 'previewcontainer');
@@ -116,8 +109,10 @@ $("#file").on("change", function(evt) {
                                     "class": "column"
                                 });
                                 var $filecard = $("<div>", {
-                                    "class": "filecard",
-                                    "onclick": "previewZipFile('" + content + "','" + zipEntry.name + "')"
+                                    "class": "filecard"
+                                });
+                                $filecard.click(function() {
+                                    previewZipFile(content, zipEntry.name);
                                 });
                                 var $filecolcontainer = $("<div>", {
                                     "class": "filecontainer",
@@ -146,8 +141,10 @@ $("#file").on("change", function(evt) {
                                     "class": "column"
                                 });
                                 var $filecard = $("<div>", {
-                                    "class": "filecard",
-                                    "onclick": "previewZipFile('" + content + "','" + zipEntry.name + "')"
+                                    "class": "filecard"
+                                });
+                                $filecard.click(function() {
+                                    previewZipFile(content, zipEntry.name);
                                 });
                                 var $filecolcontainer = $("<div>", {
                                     "class": "filecontainer",
