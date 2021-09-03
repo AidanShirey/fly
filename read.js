@@ -12,7 +12,7 @@ function previewZipFile(value, name) {
     if (extension == 'txt') {
         var $div = document.createElement("div");
         $div.setAttribute('class', 'previewcontainer');
-        var preview = document.getElementById("preview");
+        var preview = document.getElementById("filedisplayarea");
         while (preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
@@ -24,56 +24,56 @@ function previewZipFile(value, name) {
         else {
             $div.innerHTML += value;
         }
-        document.getElementById("preview").append($div);
+        document.getElementById("filedisplayarea").append($div);
     }
     else if (extension == 'gif' || extension == 'png' || extension == 'jpg') {
         var $img = document.createElement("img");
         $img.src = value;
         $img.setAttribute('class', 'emptypreview');
-        var preview = document.getElementById("preview");
+        var preview = document.getElementById("filedisplayarea");
         while (preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
-        document.getElementById("preview").append($img);
+        document.getElementById("filedisplayarea").append($img);
     }
     else if (extension == 'svg') {
         var $img = document.createElement("div");
         $img.setAttribute('class', 'emptypreview');
         $img.innerHTML = value;
-        var preview = document.getElementById("preview");
+        var preview = document.getElementById("filedisplayarea");
         while (preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
-        document.getElementById("preview").append($img);
+        document.getElementById("filedisplayarea").append($img);
     }
     else if (extension == 'docx') {
         var arrayBuffer = value;
         var $div = document.createElement("div");
         $div.setAttribute('class', 'previewcontainer');
-        var preview = document.getElementById("preview");
+        var preview = document.getElementById("filedisplayarea");
         while (preview.firstChild) {
             preview.removeChild(preview.firstChild);
         }
         mammoth.convertToHtml({ arrayBuffer: arrayBuffer })
-            .then(function(result) {
+            .then(function (result) {
                 var html = result.value; // The generated HTML
                 var $div = document.createElement("div");
                 $div.setAttribute('class', 'previewcontainer');
-                var preview = document.getElementById("preview");
+                var preview = document.getElementById("filedisplayarea");
                 while (preview.firstChild) {
                     preview.removeChild(preview.firstChild);
                 }
                 $div.innerHTML += html;
-                document.getElementById("preview").append($div);
+                document.getElementById("filedisplayarea").append($div);
             })
             .done();
-        document.getElementById("preview").append($div);
+        document.getElementById("filedisplayarea").append($div);
     }
 }
 
 
 // CODE FOR OPENING A FILE -- READING
-$("#file").on("change", function(evt) {
+$("#file").on("change", function (evt) {
     // Remove content
     $result.html("");
     // Be sure to show the results
@@ -86,8 +86,8 @@ $("#file").on("change", function(evt) {
         // $fileContent.append($rowContent);
         $result.append($fileContent);
         JSZip.loadAsync(f)                                   // 1) read the Blob
-            .then(function(zip) {
-                zip.forEach(function(relativePath, zipEntry) {  // 2) print entries
+            .then(function (zip) {
+                zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
                     if (zipEntry.dir != true) {
                         if (filecount % 4 == 0 && filecount != 0) {
                             filecount = 0;
@@ -100,7 +100,7 @@ $("#file").on("change", function(evt) {
                         var extensionz = filedirectory.substr(filedirectory.lastIndexOf('.') + 1);
                         var extensionzip = extensionz.toLowerCase();
                         if (extensionzip == 'txt' || extensionzip == 'svg') {
-                            zip.file(zipEntry.name).async('string').then(function(fileData) {
+                            zip.file(zipEntry.name).async('string').then(function (fileData) {
                                 // fileData is a string of the contents
                                 var content = fileData.split("\n");
                                 content = content.slice(0, content.length - 1);
@@ -111,7 +111,7 @@ $("#file").on("change", function(evt) {
                                 var $filecard = $("<div>", {
                                     "class": "filecard"
                                 });
-                                $filecard.click(function() {
+                                $filecard.click(function () {
                                     previewZipFile(content, zipEntry.name);
                                 });
                                 var $filecolcontainer = $("<div>", {
@@ -133,7 +133,7 @@ $("#file").on("change", function(evt) {
 
                         }
                         else if (extensionzip == 'gif' || extensionzip == 'png' || extensionzip == 'jpg') {
-                            zip.file(zipEntry.name).async('base64').then(function(fileData) {
+                            zip.file(zipEntry.name).async('base64').then(function (fileData) {
                                 // fileData is a string of the contents
                                 var content = "data:blob;base64," + fileData;
                                 var $filecol = $("<div>", {
@@ -143,7 +143,7 @@ $("#file").on("change", function(evt) {
                                 var $filecard = $("<div>", {
                                     "class": "filecard"
                                 });
-                                $filecard.click(function() {
+                                $filecard.click(function () {
                                     previewZipFile(content, zipEntry.name);
                                 });
                                 var $filecolcontainer = $("<div>", {
@@ -165,7 +165,7 @@ $("#file").on("change", function(evt) {
 
                         }
                         else if (extensionzip == 'docx') {
-                            zip.file(zipEntry.name).async('arraybuffer').then(function(fileData) {
+                            zip.file(zipEntry.name).async('arraybuffer').then(function (fileData) {
                                 // fileData is an arraybuffer of the contents
                                 var content = fileData;
                                 var $filecol = $("<div>", {
@@ -175,7 +175,7 @@ $("#file").on("change", function(evt) {
                                 var $filecard = $("<div>", {
                                     "class": "filecard"
                                 });
-                                $filecard.click(function() {
+                                $filecard.click(function () {
                                     previewZipFile(content, zipEntry.name);
                                 });
                                 var $filecolcontainer = $("<div>", {
@@ -201,7 +201,7 @@ $("#file").on("change", function(evt) {
                 });
 
 
-            }, function(e) {
+            }, function (e) {
                 $result.append($("<div>", {
                     "class": "alert alert-danger",
                     text: "Error reading " + f.name + ": " + e.message
@@ -216,8 +216,8 @@ $("#file").on("change", function(evt) {
         $fileContent.append($rowContent);
         $result.append($fileContent);
 
-        fr.onload = (function(reader) {
-            return function() {
+        fr.onload = (function (reader) {
+            return function () {
 
                 var content = reader.result;
                 var lines = content.split('\n');
@@ -229,7 +229,7 @@ $("#file").on("change", function(evt) {
                 });
                 var $div = document.createElement("div");
                 $div.setAttribute('class', 'previewcontainer');
-                var preview = document.getElementById("preview");
+                var preview = document.getElementById("filedisplayarea");
                 while (preview.firstChild) {
                     preview.removeChild(preview.firstChild);
                 }
@@ -238,7 +238,7 @@ $("#file").on("change", function(evt) {
                     for (var i = 1; i < lines.length; i++)
                         $div.innerHTML += lines[i] + '\n';
                 }
-                document.getElementById("preview").append($div);
+                document.getElementById("filedisplayarea").append($div);
             }
         })(fr);
 
@@ -252,8 +252,8 @@ $("#file").on("change", function(evt) {
         $fileContent.append($rowContent);
         $result.append($fileContent);
 
-        fr.onload = (function(reader) {
-            return function() {
+        fr.onload = (function (reader) {
+            return function () {
                 var arrayBuffer = reader.result;
                 var $filecol = $("<div>", {
                     "id": f.name,
@@ -261,16 +261,16 @@ $("#file").on("change", function(evt) {
                     text: f.name
                 });
                 mammoth.convertToHtml({ arrayBuffer: arrayBuffer })
-                    .then(function(result) {
+                    .then(function (result) {
                         var html = result.value; // The generated HTML
                         var $div = document.createElement("div");
                         $div.setAttribute('class', 'previewcontainer');
-                        var preview = document.getElementById("preview");
+                        var preview = document.getElementById("filedisplayarea");
                         while (preview.firstChild) {
                             preview.removeChild(preview.firstChild);
                         }
                         $div.innerHTML += html;
-                        document.getElementById("preview").append($div);
+                        document.getElementById("filedisplayarea").append($div);
                     })
                     .done();
             }
@@ -285,8 +285,8 @@ $("#file").on("change", function(evt) {
         var $rowContent = $("<div id='row' class='row'></div>");
         $fileContent.append($rowContent);
         $result.append($fileContent);
-        fr.onload = (function(reader) {
-            return function() {
+        fr.onload = (function (reader) {
+            return function () {
                 var content = reader.result;
                 var $filecol = $("<div>", {
                     "id": f.name,
@@ -297,11 +297,11 @@ $("#file").on("change", function(evt) {
                 var $img = document.createElement("img");
                 $img.src = content;
                 $img.setAttribute('class', 'previewcontainer');
-                var preview = document.getElementById("preview");
+                var preview = document.getElementById("filedisplayarea");
                 while (preview.firstChild) {
                     preview.removeChild(preview.firstChild);
                 }
-                document.getElementById("preview").append($img);
+                document.getElementById("filedisplayarea").append($img);
 
             }
         })(fr);
